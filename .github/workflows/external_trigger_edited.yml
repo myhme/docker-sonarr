@@ -12,7 +12,7 @@ on:
         description: 'Sonarr version'
         type: string
         required: true
-        default: 4.0.11.813
+        default: 4.0.0.0
 
 jobs:
  
@@ -46,7 +46,7 @@ jobs:
        # uses: docker/build-push-action@v6
        # with:
          # push: true
-         # context: Dockerfile.arm64edited
+         # context: ./Dockerfile.arm64edited
          # platforms: linux/amd64
          # tags: |
             # ghcr.io/myhme/sonarr:latest
@@ -62,7 +62,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          context: Dockerfile.aarch64edited
+          context: ./Dockerfile.aarch64edited
           platforms: linux/arm64
           tags: |
             ghcr.io/myhme/sonarr:latest
