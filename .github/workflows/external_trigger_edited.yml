@@ -36,7 +36,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
-          password: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Date
         id: date
@@ -67,8 +67,8 @@ jobs:
           file: ./Dockerfile.aarch64edited
           platforms: linux/arm64
           tags: |
-            ghcr.io/myhme/sonarr:latest
-            ghcr.io/myhme/sonarr:v${{ inputs.version }}
+            ghcr.io/myhme/docker-sonarr:latest
+            ghcr.io/myhme/docker-sonarr:v${{ inputs.version }}
           build-args: |
             VERSION=2.1
             SONARR_VERSION=${{ inputs.version }}
