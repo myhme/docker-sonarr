@@ -46,7 +46,8 @@ jobs:
        # uses: docker/build-push-action@v6
        # with:
          # push: true
-         # context: ./Dockerfile.arm64edited
+          # context: .
+          # file: ./Dockerfile.aarch64edited
          # platforms: linux/amd64
          # tags: |
             # ghcr.io/myhme/sonarr:latest
@@ -62,7 +63,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          context: ./Dockerfile.aarch64edited
+          context: .
+          file: ./Dockerfile.aarch64edited
           platforms: linux/arm64
           tags: |
             ghcr.io/myhme/sonarr:latest
