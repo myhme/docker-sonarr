@@ -1,0 +1,75 @@
+name: External Trigger Docker
+
+on:
+  workflow_dispatch:
+    inputs:
+      framework: 
+        description: '.net framework'
+        type: string
+        required: true
+        default: net6.0
+      version:
+        description: 'Sonarr version'
+        type: string
+        required: true
+        default: 4.0.11.813
+
+jobs:
+ 
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.github_token }}
+
+      - name: Date
+        id: date
+        run: echo "::set-output name=BUILD_DATE::$(date '+%Y-%m-%dT%H:%M:%S%:z')"
+
+     # - name: Publish to ghcr.io
+       # uses: docker/build-push-action@v6
+       # with:
+         # push: true
+         # context: Dockerfile.arm64edited
+         # platforms: linux/amd64
+         # tags: |
+            # ghcr.io/myhme/sonarr:latest
+            # ghcr.io/myhme/sonarr:v${{ inputs.version }}
+         # build-args: |
+           # VERSION=2.1
+           # SONARR_VERSION=${{ inputs.version }}
+           # BUILD_DATE=${{ steps.date.outputs.BUILD_DATE }}
+         # cache-from: type=gha
+         # cache-to: type=gha,mode=max
+
+      - name: Publish to ghcr.io
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          context: Dockerfile.aarch64edited
+          platforms: linux/arm64
+          tags: |
+            ghcr.io/myhme/sonarr:latest
+            ghcr.io/myhme/sonarr:v${{ inputs.version }}
+          build-args: |
+            VERSION=2.1
+            SONARR_VERSION=${{ inputs.version }}
+            BUILD_DATE=${{ steps.date.outputs.BUILD_DATE }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
